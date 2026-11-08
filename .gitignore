@@ -31,3 +31,5 @@ desktop.ini
 .env
 .env.*
 !.env.example
+# Archivos comprimidos del proyecto
+trueqifyf fronted.zip
