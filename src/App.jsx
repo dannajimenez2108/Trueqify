@@ -163,6 +163,7 @@ export default function App() {
   const [mensaje, setMensaje] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("Todas");
+  const [filtroComunidad, setFiltroComunidad] = useState("Todas");
 
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
@@ -336,17 +337,21 @@ export default function App() {
     setMensaje(`Solicitud enviada para: ${producto.nombre}.`);
   }
 
-  const productosFiltrados = productos.filter((producto) => {
-    const coincideNombre = String(producto.nombre ?? "")
-      .toLowerCase()
-      .includes(busqueda.trim().toLowerCase());
+const productosFiltrados = productos.filter((producto) => {
+  const coincideNombre = String(producto.nombre ?? "")
+    .toLowerCase()
+    .includes(busqueda.trim().toLowerCase());
 
-    const coincideCategoria =
-      filtroCategoria === "Todas" ||
-      producto.categoria === filtroCategoria;
+  const coincideCategoria =
+    filtroCategoria === "Todas" ||
+    producto.categoria === filtroCategoria;
 
-    return coincideNombre && coincideCategoria;
-  });
+  const coincideComunidad =
+    filtroComunidad === "Todas" ||
+    producto.comunidad === filtroComunidad;
+
+  return coincideNombre && coincideCategoria && coincideComunidad;
+});
 
   return (
     <div className="app">
@@ -489,8 +494,17 @@ export default function App() {
                 <option value="Alimentos">Alimentos</option>
                 <option value="Hogar">Hogar</option>
               </select>
-            </div>
 
+              <select
+  value={filtroComunidad}
+  onChange={(e) => setFiltroComunidad(e.target.value)}
+  aria-label="Filtrar por comunidad"
+>
+  <option value="Todas">Todas las comunidades</option>
+  <option value="La Esperanza">La Esperanza</option>
+  <option value="El Progreso">El Progreso</option>
+</select>
+            </div>
             {productosFiltrados.length ? (
               <div className="catalogo-grid">
                 {productosFiltrados.map((producto) => (
